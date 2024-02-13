@@ -61,7 +61,7 @@
             txtContent.Name = "txtContent";
             txtContent.Size = new Size(526, 446);
             txtContent.TabIndex = 0;
-            txtContent.Text = "test";
+            txtContent.Text = "";
             txtContent.TextChanged += txtContent_TextChanged;
             // 
             // mnuMenuStrip
@@ -154,14 +154,14 @@
             // mnuEditThemeDark
             // 
             mnuEditThemeDark.Name = "mnuEditThemeDark";
-            mnuEditThemeDark.Size = new Size(180, 22);
+            mnuEditThemeDark.Size = new Size(101, 22);
             mnuEditThemeDark.Text = "Dark";
             mnuEditThemeDark.Click += mnuEditThemeDark_Click;
             // 
             // mnuEditThemeLight
             // 
             mnuEditThemeLight.Name = "mnuEditThemeLight";
-            mnuEditThemeLight.Size = new Size(180, 22);
+            mnuEditThemeLight.Size = new Size(101, 22);
             mnuEditThemeLight.Text = "Light";
             mnuEditThemeLight.Click += mnuEditThemeLight_Click;
             // 
