@@ -30,7 +30,7 @@
         {
             components = new System.ComponentModel.Container();
             txtContent = new RichTextBox();
-            menuStrip1 = new MenuStrip();
+            mnuMenuStrip = new MenuStrip();
             mnuFile = new ToolStripMenuItem();
             mnuFileNew = new ToolStripMenuItem();
             mnuFileOpen = new ToolStripMenuItem();
@@ -41,13 +41,16 @@
             mnuColor = new ToolStripMenuItem();
             mnuEditColorBackColor = new ToolStripMenuItem();
             mnuEditColorFontColor = new ToolStripMenuItem();
+            themeToolStripMenuItem = new ToolStripMenuItem();
+            mnuEditThemeDark = new ToolStripMenuItem();
+            mnuEditThemeLight = new ToolStripMenuItem();
             mnuHelp = new ToolStripMenuItem();
             lblStatusStrip = new StatusStrip();
             lblStatus = new ToolStripStatusLabel();
             lblStatusLabel = new ToolStripStatusLabel();
             lblDateTime = new ToolStripStatusLabel();
             tmrClock = new System.Windows.Forms.Timer(components);
-            menuStrip1.SuspendLayout();
+            mnuMenuStrip.SuspendLayout();
             lblStatusStrip.SuspendLayout();
             SuspendLayout();
             // 
@@ -61,15 +64,15 @@
             txtContent.Text = "test";
             txtContent.TextChanged += txtContent_TextChanged;
             // 
-            // menuStrip1
+            // mnuMenuStrip
             // 
-            menuStrip1.BackColor = Color.LightSteelBlue;
-            menuStrip1.Items.AddRange(new ToolStripItem[] { mnuFile, editToolStripMenuItem, mnuHelp });
-            menuStrip1.Location = new Point(0, 0);
-            menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(526, 24);
-            menuStrip1.TabIndex = 1;
-            menuStrip1.Text = "menuStrip1";
+            mnuMenuStrip.BackColor = Color.LightSteelBlue;
+            mnuMenuStrip.Items.AddRange(new ToolStripItem[] { mnuFile, editToolStripMenuItem, mnuHelp });
+            mnuMenuStrip.Location = new Point(0, 0);
+            mnuMenuStrip.Name = "mnuMenuStrip";
+            mnuMenuStrip.Size = new Size(526, 24);
+            mnuMenuStrip.TabIndex = 1;
+            mnuMenuStrip.Text = "menuStrip1";
             // 
             // mnuFile
             // 
@@ -108,7 +111,7 @@
             // 
             // editToolStripMenuItem
             // 
-            editToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { mnuEditFont, mnuColor });
+            editToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { mnuEditFont, mnuColor, themeToolStripMenuItem });
             editToolStripMenuItem.Name = "editToolStripMenuItem";
             editToolStripMenuItem.Size = new Size(39, 20);
             editToolStripMenuItem.Text = "&Edit";
@@ -130,15 +133,37 @@
             // mnuEditColorBackColor
             // 
             mnuEditColorBackColor.Name = "mnuEditColorBackColor";
-            mnuEditColorBackColor.Size = new Size(180, 22);
+            mnuEditColorBackColor.Size = new Size(170, 22);
             mnuEditColorBackColor.Text = "Background Color";
             mnuEditColorBackColor.Click += mnuEditColorBackColor_Click;
             // 
             // mnuEditColorFontColor
             // 
             mnuEditColorFontColor.Name = "mnuEditColorFontColor";
-            mnuEditColorFontColor.Size = new Size(180, 22);
+            mnuEditColorFontColor.Size = new Size(170, 22);
             mnuEditColorFontColor.Text = "Font Color";
+            mnuEditColorFontColor.Click += mnuEditColorFontColor_Click;
+            // 
+            // themeToolStripMenuItem
+            // 
+            themeToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { mnuEditThemeDark, mnuEditThemeLight });
+            themeToolStripMenuItem.Name = "themeToolStripMenuItem";
+            themeToolStripMenuItem.Size = new Size(180, 22);
+            themeToolStripMenuItem.Text = "Theme";
+            // 
+            // mnuEditThemeDark
+            // 
+            mnuEditThemeDark.Name = "mnuEditThemeDark";
+            mnuEditThemeDark.Size = new Size(180, 22);
+            mnuEditThemeDark.Text = "Dark";
+            mnuEditThemeDark.Click += mnuEditThemeDark_Click;
+            // 
+            // mnuEditThemeLight
+            // 
+            mnuEditThemeLight.Name = "mnuEditThemeLight";
+            mnuEditThemeLight.Size = new Size(180, 22);
+            mnuEditThemeLight.Text = "Light";
+            mnuEditThemeLight.Click += mnuEditThemeLight_Click;
             // 
             // mnuHelp
             // 
@@ -189,13 +214,13 @@
             ClientSize = new Size(526, 498);
             Controls.Add(lblStatusStrip);
             Controls.Add(txtContent);
-            Controls.Add(menuStrip1);
-            MainMenuStrip = menuStrip1;
+            Controls.Add(mnuMenuStrip);
+            MainMenuStrip = mnuMenuStrip;
             Name = "frmFileIO";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "File I/O";
-            menuStrip1.ResumeLayout(false);
-            menuStrip1.PerformLayout();
+            mnuMenuStrip.ResumeLayout(false);
+            mnuMenuStrip.PerformLayout();
             lblStatusStrip.ResumeLayout(false);
             lblStatusStrip.PerformLayout();
             ResumeLayout(false);
@@ -205,7 +230,7 @@
         #endregion
 
         private RichTextBox txtContent;
-        private MenuStrip menuStrip1;
+        private MenuStrip mnuMenuStrip;
         private ToolStripMenuItem mnuFile;
         private ToolStripMenuItem mnuHelp;
         private StatusStrip lblStatusStrip;
@@ -222,5 +247,8 @@
         private ToolStripMenuItem mnuColor;
         private ToolStripMenuItem mnuEditColorBackColor;
         private ToolStripMenuItem mnuEditColorFontColor;
+        private ToolStripMenuItem themeToolStripMenuItem;
+        private ToolStripMenuItem mnuEditThemeDark;
+        private ToolStripMenuItem mnuEditThemeLight;
     }
 }

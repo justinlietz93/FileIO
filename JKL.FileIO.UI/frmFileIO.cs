@@ -2,8 +2,9 @@ namespace JKL.FileIO.UI
 {
     public partial class frmFileIO : Form
     {
-        string fileName = null;
+        string fileName;
         private bool changesMade = false;
+        private bool darkThemeSet = false;
 
 
         public frmFileIO()
@@ -11,6 +12,7 @@ namespace JKL.FileIO.UI
             InitializeComponent();
         }
 
+        // Save function, writes data straight to filePath
         private void SaveToFile(string filePath)
         {
             using (StreamWriter streamWriter = File.CreateText(filePath))
@@ -21,6 +23,7 @@ namespace JKL.FileIO.UI
             lblStatus.Text = $"{filePath} successfully saved.";
         }
 
+        // Save As function, prompts user with save dialog
         private void SaveAs()
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
@@ -39,8 +42,36 @@ namespace JKL.FileIO.UI
             }
         }
 
+        private void SetTheme()
+        {
+            if (darkThemeSet)
+            {
+                // Dark mode theme
+                txtContent.BackColor = Color.FromArgb(30, 30, 30);
+                txtContent.ForeColor = Color.White;
+                mnuMenuStrip.BackColor = Color.FromArgb(60, 60, 60);
+                mnuMenuStrip.ForeColor = Color.White;
+                lblStatusStrip.BackColor = Color.FromArgb(60, 60, 60);
+                lblDateTime.ForeColor = Color.White;
+                this.BackColor = Color.FromArgb(60, 60, 60);
+                lblStatus.ForeColor = Color.White;
+            }
+            else
+            {
+                txtContent.BackColor = Color.White;
+                txtContent.ForeColor = SystemColors.ControlText;
+                mnuMenuStrip.BackColor = Color.LightSteelBlue;
+                mnuMenuStrip.ForeColor = SystemColors.ControlText;
+                lblStatusStrip.BackColor = SystemColors.Control;
+                lblDateTime.ForeColor = SystemColors.ControlText;
+                this.BackColor = SystemColors.Control;
+                lblStatus.ForeColor = SystemColors.ControlText;
+            }
+        }
+
         private void txtContent_TextChanged(object sender, EventArgs e)
         {
+            // Detects when user makes changes and sets bool to true
             changesMade = true;
         }
 
@@ -48,7 +79,15 @@ namespace JKL.FileIO.UI
         {
             try
             {
-                lblStatus.ForeColor = Color.Blue;
+                if (darkThemeSet)
+                {
+                    lblStatus.ForeColor = Color.White;
+                }
+                else
+                {
+                    lblStatus.ForeColor = Color.Black;
+                }
+
                 lblStatus.Text = string.Empty;
 
                 // Checks if text changes were made
@@ -74,7 +113,15 @@ namespace JKL.FileIO.UI
         {
             try
             {
-                lblStatus.ForeColor = Color.Blue;
+                if (darkThemeSet)
+                {
+                    lblStatus.ForeColor = Color.White;
+                }
+                else
+                {
+                    lblStatus.ForeColor = Color.Black;
+                }
+
                 lblStatus.Text = string.Empty;
 
                 OpenFileDialog openFileDialog;
@@ -92,7 +139,6 @@ namespace JKL.FileIO.UI
                     fileName = openFileDialog.FileName;
                     try
                     {
-                        lblStatus.ForeColor = Color.Blue;
 
                         StreamReader streamReader;
                         txtContent.Text = string.Empty;
@@ -139,7 +185,15 @@ namespace JKL.FileIO.UI
         {
             try
             {
-                lblStatus.ForeColor = Color.Blue;
+                if (darkThemeSet)
+                {
+                    lblStatus.ForeColor = Color.White;
+                }
+                else
+                {
+                    lblStatus.ForeColor = Color.Black;
+                }
+
                 lblStatus.Text = string.Empty;
 
                 if (!string.IsNullOrEmpty(fileName) && File.Exists(fileName))
@@ -164,7 +218,15 @@ namespace JKL.FileIO.UI
         {
             try
             {
-                lblStatus.ForeColor = Color.Blue;
+                if (darkThemeSet)
+                {
+                    lblStatus.ForeColor = Color.White;
+                }
+                else
+                {
+                    lblStatus.ForeColor = Color.Black;
+                }
+
                 lblStatus.Text = string.Empty;
 
                 SaveAs();
@@ -202,7 +264,15 @@ namespace JKL.FileIO.UI
         {
             try
             {
-                lblStatus.ForeColor = Color.Blue;
+                if (darkThemeSet)
+                {
+                    lblStatus.ForeColor = Color.White;
+                }
+                else
+                {
+                    lblStatus.ForeColor = Color.Black;
+                }
+
                 lblStatus.Text = string.Empty;
 
                 ColorDialog colorDialog = new ColorDialog();
@@ -217,6 +287,47 @@ namespace JKL.FileIO.UI
                 lblStatus.ForeColor = Color.Red;
                 lblStatus.Text = ex.Message;
             }
+        }
+
+        private void mnuEditColorFontColor_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (darkThemeSet)
+                {
+                    lblStatus.ForeColor = Color.White;
+                }
+                else
+                {
+                    lblStatus.ForeColor = Color.Black;
+                }
+
+                lblStatus.Text = string.Empty;
+
+                ColorDialog colorDialog = new ColorDialog();
+
+                if (colorDialog.ShowDialog() == DialogResult.OK)
+                {
+                    txtContent.ForeColor = colorDialog.Color;
+                }
+            }
+            catch (Exception ex)
+            {
+                lblStatus.ForeColor = Color.Red;
+                lblStatus.Text = ex.Message;
+            }
+        }
+
+        private void mnuEditThemeDark_Click(object sender, EventArgs e)
+        {
+            darkThemeSet = true;
+            SetTheme();
+        }
+
+        private void mnuEditThemeLight_Click(object sender, EventArgs e)
+        {
+            darkThemeSet = false;
+            SetTheme();
         }
     }
 }
