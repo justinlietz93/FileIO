@@ -199,8 +199,8 @@ namespace JKL.FileIO.UI
                     if (result == DialogResult.Yes)
                     {
                         SaveAs();
-                        OpenFile();
                     }
+                    OpenFile();
                 }
                 else
                 {
@@ -267,8 +267,11 @@ namespace JKL.FileIO.UI
 
         private void mnuHelp_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Enter your text content into the content box area. To save click File then Save, or Save As. To open a new" +
-                            " file click File then New. You can also open an existing file by clicking File then Open.", "Help");
+            MessageBox.Show("Enter your text content into the content box area.\n" +
+                            "To save click File then Save, or Save As.\n" +
+                            "To start a new file click File then New.\n" +
+                            "To open an existing file click File then Open.\n" +
+                            "To change font style/color, background colors and themes click Edit.", "Help");
         }
 
         private void mnuEditFont_Click(object sender, EventArgs e)
