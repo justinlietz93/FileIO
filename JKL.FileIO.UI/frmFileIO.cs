@@ -1,3 +1,5 @@
+using System.Windows.Forms;
+
 namespace JKL.FileIO.UI
 {
     public partial class frmFileIO : Form
@@ -19,6 +21,7 @@ namespace JKL.FileIO.UI
             {
                 streamWriter.WriteLine(txtContent.Text);
                 streamWriter.Dispose();
+                changesMade = false;
             }
             lblStatus.Text = $"{filePath} successfully saved.";
         }
@@ -35,6 +38,7 @@ namespace JKL.FileIO.UI
             {
                 fileName = saveFileDialog.FileName;
                 SaveToFile(fileName);
+                changesMade = false;
             }
             else
             {
@@ -42,6 +46,61 @@ namespace JKL.FileIO.UI
             }
         }
 
+        private void OpenFile()
+        {
+
+            OpenFileDialog openFileDialog;
+
+            openFileDialog = new OpenFileDialog();
+
+            openFileDialog.Title = "Open File";
+            openFileDialog.InitialDirectory = @"c:\Users\public";
+            openFileDialog.Filter = "Text Files (*.txt)|*.txt|All Files (*.*)|*.*";
+
+            // Show open file dialog to user
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                lblStatus.Text = openFileDialog.FileName;
+                fileName = openFileDialog.FileName;
+                try
+                {
+                    StreamReader streamReader;
+                    txtContent.Text = string.Empty;
+
+                    if (File.Exists(fileName))
+                    {
+                        // User streamreader to read from file
+                        streamReader = File.OpenText(fileName);
+                        string content = streamReader.ReadToEnd();
+
+                        streamReader.Close();
+                        streamReader = null;
+
+                        // Put data from file into textbox
+                        txtContent.Text = content;
+
+                        lblStatus.Text = "Opened (" + fileName + ")";
+                        changesMade = false;
+                    }
+                    else
+                    {
+                        throw new Exception("(" + fileName + ") does not exist.");
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    lblStatus.ForeColor = Color.Red;
+                    lblStatus.Text = ex.Message;
+                }
+            }
+            else
+            {
+                throw new Exception("No file selected.");
+            }
+        }
+
+        // Changes various style settings based on whether dark mode or light mode theme is selected
         private void SetTheme()
         {
             if (darkThemeSet)
@@ -58,6 +117,7 @@ namespace JKL.FileIO.UI
             }
             else
             {
+                // Light mode theme
                 txtContent.BackColor = Color.White;
                 txtContent.ForeColor = SystemColors.ControlText;
                 mnuMenuStrip.BackColor = Color.LightSteelBlue;
@@ -66,6 +126,19 @@ namespace JKL.FileIO.UI
                 lblDateTime.ForeColor = SystemColors.ControlText;
                 this.BackColor = SystemColors.Control;
                 lblStatus.ForeColor = SystemColors.ControlText;
+            }
+        }
+
+        // Checks for theme to make sure Status font color will be visible when necessary
+        private void CheckTheme()
+        {
+            if (darkThemeSet)
+            {
+                lblStatus.ForeColor = Color.White;
+            }
+            else
+            {
+                lblStatus.ForeColor = Color.Black;
             }
         }
 
@@ -79,18 +152,10 @@ namespace JKL.FileIO.UI
         {
             try
             {
-                if (darkThemeSet)
-                {
-                    lblStatus.ForeColor = Color.White;
-                }
-                else
-                {
-                    lblStatus.ForeColor = Color.Black;
-                }
-
+                CheckTheme();
                 lblStatus.Text = string.Empty;
 
-                // Checks if text changes were made
+                // Checks if text changes were made, if so prompt for save, if not then start new file
                 if (changesMade)
                 {
                     DialogResult result = MessageBox.Show("Would you like to save?", "Save Changes", MessageBoxButtons.YesNoCancel);
@@ -99,7 +164,10 @@ namespace JKL.FileIO.UI
                         SaveAs();
                     }
                 }
+
+                // Clears the content box, sets the fileName to no file, and sets changes made to false
                 txtContent.Text = string.Empty;
+                fileName = "";
                 changesMade = false;
             }
             catch (Exception ex)
@@ -113,14 +181,7 @@ namespace JKL.FileIO.UI
         {
             try
             {
-                if (darkThemeSet)
-                {
-                    lblStatus.ForeColor = Color.White;
-                }
-                else
-                {
-                    lblStatus.ForeColor = Color.Black;
-                }
+                CheckTheme();
 
                 lblStatus.Text = string.Empty;
 
@@ -132,46 +193,19 @@ namespace JKL.FileIO.UI
                 openFileDialog.InitialDirectory = @"c:\Users\public";
                 openFileDialog.Filter = "Text Files (*.txt)|*.txt|All Files (*.*)|*.*";
 
-                // Show dialog to user
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                if (changesMade)
                 {
-                    lblStatus.Text = openFileDialog.FileName;
-                    fileName = openFileDialog.FileName;
-                    try
+                    DialogResult result = MessageBox.Show("Would you like to save?", "Save Changes", MessageBoxButtons.YesNoCancel);
+                    if (result == DialogResult.Yes)
                     {
-
-                        StreamReader streamReader;
-                        txtContent.Text = string.Empty;
-
-                        if (File.Exists(fileName))
-                        {
-                            // User streamreader to read from file
-                            streamReader = File.OpenText(fileName);
-                            string content = streamReader.ReadToEnd();
-
-                            streamReader.Close();
-                            streamReader = null;
-
-                            // Put data from file into textbox
-                            txtContent.Text = content;
-
-                            lblStatus.Text = "Opened (" + fileName + ")";
-                        }
-                        else
-                        {
-                            throw new Exception("(" + fileName + ") does not exist.");
-                        }
-
-                    }
-                    catch (Exception ex)
-                    {
-                        lblStatus.ForeColor = Color.Red;
-                        lblStatus.Text = ex.Message;
+                        SaveAs();
+                        OpenFile();
                     }
                 }
                 else
                 {
-                    throw new Exception("No file selected.");
+                    // Show open file dialog to user
+                    OpenFile();
                 }
             }
             catch (Exception ex)
@@ -185,14 +219,7 @@ namespace JKL.FileIO.UI
         {
             try
             {
-                if (darkThemeSet)
-                {
-                    lblStatus.ForeColor = Color.White;
-                }
-                else
-                {
-                    lblStatus.ForeColor = Color.Black;
-                }
+                CheckTheme();
 
                 lblStatus.Text = string.Empty;
 
@@ -218,14 +245,7 @@ namespace JKL.FileIO.UI
         {
             try
             {
-                if (darkThemeSet)
-                {
-                    lblStatus.ForeColor = Color.White;
-                }
-                else
-                {
-                    lblStatus.ForeColor = Color.Black;
-                }
+                CheckTheme();
 
                 lblStatus.Text = string.Empty;
 
@@ -264,14 +284,7 @@ namespace JKL.FileIO.UI
         {
             try
             {
-                if (darkThemeSet)
-                {
-                    lblStatus.ForeColor = Color.White;
-                }
-                else
-                {
-                    lblStatus.ForeColor = Color.Black;
-                }
+                CheckTheme();
 
                 lblStatus.Text = string.Empty;
 
@@ -293,14 +306,7 @@ namespace JKL.FileIO.UI
         {
             try
             {
-                if (darkThemeSet)
-                {
-                    lblStatus.ForeColor = Color.White;
-                }
-                else
-                {
-                    lblStatus.ForeColor = Color.Black;
-                }
+                CheckTheme();
 
                 lblStatus.Text = string.Empty;
 
